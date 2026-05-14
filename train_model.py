@@ -58,13 +58,14 @@ if __name__ == "__main__":
         mlflow.log_metric("mae", mae)
         mlflow.log_metric("r2", r2)
 
-        mlflow.sklearn.log_model(best_model, "model")
+        mlflow.sklearn.log_model(best_model, name="model")
         joblib.dump(best_model, "california_model.pkl")
 
         runs = mlflow.search_runs()
         best_run = runs.loc[runs['metrics.r2'].idxmax()]
-        model_uri = best_run['artifact_uri'].replace("file://", "") + "/model"
+        run_id = mlflow.active_run().info.run_id
+        model_uri = f"runs:/{run_id}/model"
         with open("best_model_uri.txt", "w") as f:
-            f.write(model_uri)
+            f.write(model_uri + '\n')
 
         print(f"Лучшая модель сохранена по URI: {model_uri}")

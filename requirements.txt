@@ -3,3 +3,4 @@ scikit_learn
 mlflow
 numpy
 pandas
+uvicorn
